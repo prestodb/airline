@@ -45,9 +45,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.find;
 import static io.airlift.airline.TestingUtil.singleCommandParser;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -154,7 +151,10 @@ public class TestCommand
     public void repeatedArgs()
     {
         Cli<Args1> parser = singleCommandParser(Args1.class);
-        CommandMetadata command = find(parser.getMetadata().getDefaultGroupCommands(), compose(equalTo("Args1"), CommandMetadata::getName));
+        CommandMetadata command = parser.getMetadata().getDefaultGroupCommands().stream()
+                .filter(commandMeta -> "Args1".equals(commandMeta.getName()))
+                .findFirst()
+                .orElse(null);
         assertEquals(command.getAllOptions().size(), 8);
     }
 
@@ -425,6 +425,7 @@ public class TestCommand
             @Option(name = "-long")
             public long l;
         }
+
         singleCommandParser(A.class).parse("-lon", "32");
     }
 }

@@ -37,18 +37,14 @@ import io.airlift.airline.args.OptionsRequired;
 import io.airlift.airline.command.CommandAdd;
 import io.airlift.airline.command.CommandCommit;
 import io.airlift.airline.model.CommandMetadata;
+import jakarta.inject.Inject;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import javax.inject.Inject;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.find;
 import static io.airlift.airline.SingleCommand.singleCommand;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -130,7 +126,10 @@ public class TestSingleCommand
     public void repeatedArgs()
     {
         SingleCommand<Args1> parser = singleCommand(Args1.class);
-        CommandMetadata command = find(ImmutableList.of(parser.getCommandMetadata()), compose(equalTo("Args1"), CommandMetadata::getName));
+        CommandMetadata command = ImmutableList.of(parser.getCommandMetadata()).stream()
+                .filter(commandMeta -> "Args1".equals(commandMeta.getName()))
+                .findFirst()
+                .orElse(null);
         assertEquals(command.getAllOptions().size(), 8);
     }
 
@@ -379,6 +378,7 @@ public class TestSingleCommand
             @Option(name = "-long")
             public long l;
         }
+
         singleCommand(A.class).parse("32");
     }
 

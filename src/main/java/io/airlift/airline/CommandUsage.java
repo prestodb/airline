@@ -3,8 +3,7 @@ package io.airlift.airline;
 import io.airlift.airline.model.ArgumentsMetadata;
 import io.airlift.airline.model.CommandMetadata;
 import io.airlift.airline.model.OptionMetadata;
-
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;

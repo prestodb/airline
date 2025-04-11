@@ -1,6 +1,6 @@
 package io.airlift.airline;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @Command(name = "ping", description = "network test utility")
 public class Ping

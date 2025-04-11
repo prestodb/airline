@@ -3,8 +3,7 @@ package io.airlift.airline;
 import io.airlift.airline.model.CommandGroupMetadata;
 import io.airlift.airline.model.CommandMetadata;
 import io.airlift.airline.model.GlobalMetadata;
-
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;

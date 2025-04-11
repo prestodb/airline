@@ -13,10 +13,6 @@ import io.airlift.airline.model.OptionMetadata;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.find;
-
 public class Parser
 {
     private static final Pattern SHORT_OPTIONS_PATTERN = Pattern.compile("-[^-].*");
@@ -38,7 +34,10 @@ public class Parser
 
         // parse group
         if (tokens.hasNext()) {
-            CommandGroupMetadata group = find(metadata.getCommandGroups(), compose(equalTo(tokens.peek()), CommandGroupMetadata::getName), null);
+            CommandGroupMetadata group = metadata.getCommandGroups().stream()
+                    .filter(groupMeta -> tokens.peek().equals(groupMeta.getName()))
+                    .findFirst()
+                    .orElse(null);
             if (group != null) {
                 tokens.next();
                 state = state.withGroup(group).pushContext(Context.GROUP);
@@ -54,7 +53,10 @@ public class Parser
         }
 
         if (tokens.hasNext()) {
-            CommandMetadata command = find(expectedCommands, compose(equalTo(tokens.peek()), CommandMetadata::getName), null);
+            CommandMetadata command = expectedCommands.stream()
+                    .filter(groupMeta -> tokens.peek().equals(groupMeta.getName()))
+                    .findFirst()
+                    .orElse(null);
             if (command == null) {
                 while (tokens.hasNext()) {
                     state = state.withUnparsedInput(tokens.next());

@@ -10,8 +10,7 @@ import io.airlift.airline.model.GlobalMetadata;
 import io.airlift.airline.model.MetadataLoader;
 import io.airlift.airline.model.OptionMetadata;
 import io.airlift.airline.model.SuggesterMetadata;
-
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
