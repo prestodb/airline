@@ -1,7 +1,6 @@
 package io.airlift.airline.model;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import io.airlift.airline.Accessor;
 
 import java.lang.reflect.Field;
@@ -9,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.Streams.stream;
 import static java.util.Objects.requireNonNull;
 
 public class ArgumentsMetadata
@@ -23,7 +23,7 @@ public class ArgumentsMetadata
     {
         requireNonNull(title, "title is null");
         requireNonNull(path, "path is null");
-        checkArgument(!Iterables.isEmpty(path), "path is empty");
+        checkArgument(stream(path).findAny().isPresent(), "path is empty");
 
         this.title = title;
         this.description = description;
@@ -35,7 +35,7 @@ public class ArgumentsMetadata
     public ArgumentsMetadata(Iterable<ArgumentsMetadata> arguments)
     {
         requireNonNull(arguments, "arguments is null");
-        checkArgument(!Iterables.isEmpty(arguments), "arguments is empty");
+        checkArgument(stream(arguments).findAny().isPresent(), "arguments is empty");
 
         ArgumentsMetadata first = arguments.iterator().next();
 

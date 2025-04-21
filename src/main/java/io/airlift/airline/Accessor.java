@@ -16,6 +16,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.Streams.findLast;
+import static com.google.common.collect.Streams.stream;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 
@@ -34,7 +36,7 @@ public class Accessor
     public Accessor(Iterable<Field> path)
     {
         requireNonNull(path, "path is null");
-        checkArgument(!Iterables.isEmpty(path), "path is empty");
+        checkArgument(stream(path).findAny().isPresent(), "path is empty");
 
         this.path = ImmutableList.copyOf(path);
         this.name = this.path.get(0).getDeclaringClass().getSimpleName() + "." +
@@ -86,7 +88,7 @@ public class Accessor
 
     public void addValues(Object commandInstance, Iterable<?> values)
     {
-        if (Iterables.isEmpty(values)) {
+        if (!stream(values).findAny().isPresent()) {
             return;
         }
 
@@ -101,7 +103,7 @@ public class Accessor
         }
         else {
             try {
-                field.set(instance, Iterables.getLast(values));
+                field.set(instance, findLast(stream(values)).get());
             }
             catch (Exception e) {
                 throw new ParseException(e, "Error setting %s for argument %s", field.getName(), name);

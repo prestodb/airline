@@ -1,7 +1,6 @@
 package io.airlift.airline.model;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import io.airlift.airline.Accessor;
 import io.airlift.airline.OptionType;
 
@@ -10,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.Streams.stream;
 import static java.util.Objects.requireNonNull;
 
 public class OptionMetadata
@@ -36,10 +36,10 @@ public class OptionMetadata
     {
         requireNonNull(optionType, "optionType is null");
         requireNonNull(options, "options is null");
-        checkArgument(!Iterables.isEmpty(options), "options is empty");
+        checkArgument(stream(options).findAny().isPresent(), "options is empty");
         requireNonNull(title, "title is null");
         requireNonNull(path, "path is null");
-        checkArgument(!Iterables.isEmpty(path), "path is empty");
+        checkArgument(stream(path).findAny().isPresent(), "path is empty");
 
         this.optionType = optionType;
         this.options = ImmutableSet.copyOf(options);
@@ -62,7 +62,7 @@ public class OptionMetadata
     public OptionMetadata(Iterable<OptionMetadata> options)
     {
         requireNonNull(options, "options is null");
-        checkArgument(!Iterables.isEmpty(options), "options is empty");
+        checkArgument(stream(options).findAny().isPresent(), "options is empty");
 
         OptionMetadata option = options.iterator().next();
 

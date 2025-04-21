@@ -18,7 +18,6 @@
 
 package io.airlift.airline;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.airlift.airline.model.ArgumentsMetadata;
@@ -34,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.Streams.stream;
 import static io.airlift.airline.ParserUtil.createInstance;
@@ -305,8 +305,8 @@ public class Cli<C>
     public static class GroupBuilder<C>
     {
         private final String name;
-        private String description = null;
-        private Class<? extends C> defaultCommand = null;
+        private String description;
+        private Class<? extends C> defaultCommand;
 
         private final List<Class<? extends C>> commands = new ArrayList<>();
 
@@ -320,7 +320,7 @@ public class Cli<C>
         {
             requireNonNull(description, "description is null");
             checkArgument(!description.isEmpty(), "description is empty");
-            Preconditions.checkState(this.description == null, "description is already set");
+            checkState(this.description == null, "description is already set");
             this.description = description;
             return this;
         }
@@ -328,7 +328,7 @@ public class Cli<C>
         public GroupBuilder<C> withDefaultCommand(Class<? extends C> defaultCommand)
         {
             requireNonNull(defaultCommand, "defaultCommand is null");
-            Preconditions.checkState(this.defaultCommand == null, "defaultCommand is already set");
+            checkState(this.defaultCommand == null, "defaultCommand is already set");
             this.defaultCommand = defaultCommand;
             return this;
         }

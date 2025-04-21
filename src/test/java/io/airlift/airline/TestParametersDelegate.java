@@ -1,9 +1,8 @@
 package io.airlift.airline;
 
 import com.google.common.collect.ImmutableList;
+import jakarta.inject.Inject;
 import org.testng.annotations.Test;
-
-import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +72,6 @@ public class TestParametersDelegate
     @Test
     public void delegatingSetsFieldsOnBothMainParamsAndTheDelegatedParams()
     {
-
         DelegatingSetsFieldsOnBothMainParamsAndTheDelegatedParams p = singleCommandParser(DelegatingSetsFieldsOnBothMainParamsAndTheDelegatedParams.class)
                 .parse("command", "-c", "--long-d", "123", "--long-b", "bValue");
         assertFalse(p.isA);
@@ -177,7 +175,6 @@ public class TestParametersDelegate
     @Test
     public void nullDelegatesAreAllowed()
     {
-
         NullDelegatesAreProhibited value = singleCommandParser(NullDelegatesAreProhibited.class).parse("command", "-a");
         assertEquals(value.delegate.a, true);
     }

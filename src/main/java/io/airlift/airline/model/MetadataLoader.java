@@ -2,7 +2,6 @@ package io.airlift.airline.model;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
 import io.airlift.airline.Accessor;
 import io.airlift.airline.Arguments;
@@ -10,8 +9,7 @@ import io.airlift.airline.Command;
 import io.airlift.airline.Option;
 import io.airlift.airline.OptionType;
 import io.airlift.airline.Suggester;
-
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -25,6 +23,10 @@ import static com.google.common.collect.Streams.stream;
 
 public class MetadataLoader
 {
+    private MetadataLoader()
+    {
+    }
+
     public static GlobalMetadata loadGlobal(String name,
             String description,
             CommandMetadata defaultCommand,
@@ -86,7 +88,7 @@ public class MetadataLoader
                 hidden, injectionMetadata.globalOptions,
                 injectionMetadata.groupOptions,
                 injectionMetadata.commandOptions,
-                Iterables.getFirst(injectionMetadata.arguments, null),
+                injectionMetadata.arguments.stream().findFirst().orElse(null),
                 injectionMetadata.metadataInjections,
                 commandType);
 

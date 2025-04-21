@@ -2,16 +2,22 @@ package io.airlift.airline;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Streams;
 import io.airlift.airline.model.ArgumentsMetadata;
 import io.airlift.airline.model.OptionMetadata;
 
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static com.google.common.collect.Streams.stream;
 
 public class ParserUtil
 {
+    private ParserUtil()
+    {
+    }
+
     public static <T> T createInstance(Class<T> type)
     {
         if (type != null) {
@@ -53,7 +59,9 @@ public class ParserUtil
             List<?> values = parsedOptions.get(option);
             if (option.getArity() > 1 && values != null && !values.isEmpty()) {
                 // hack: flatten the collection
-                values = ImmutableList.copyOf(concat((Iterable<Iterable<Object>>) values));
+                values = stream((Iterable<Iterable<Object>>) values)
+                        .flatMap(Streams::stream)
+                        .collect(toImmutableList());
             }
             if (values != null && !values.isEmpty()) {
                 for (Accessor accessor : option.getAccessors()) {

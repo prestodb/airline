@@ -14,6 +14,10 @@ import static java.util.stream.Collectors.joining;
 
 public class UsageHelper
 {
+    private UsageHelper()
+    {
+    }
+
     public static final Comparator<OptionMetadata> DEFAULT_OPTION_COMPARATOR = new Comparator<OptionMetadata>()
     {
         @Override

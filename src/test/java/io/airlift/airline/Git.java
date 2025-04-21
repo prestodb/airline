@@ -8,6 +8,10 @@ import static io.airlift.airline.OptionType.GLOBAL;
 
 public class Git
 {
+    private Git()
+    {
+    }
+
     public static void main(String... args)
     {
         CliBuilder<Runnable> builder = Cli.<Runnable>builder("git")
