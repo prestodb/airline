@@ -6,7 +6,7 @@ on:
 env:
   JAVA_VERSION: ${{ vars.JAVA_VERSION }}
   JAVA_DISTRIBUTION: ${{ vars.JAVA_DISTRIBUTION }}
-  MAVEN_OPTS: ${{ vars.MAVEN_OPTS}}
+  MAVEN_OPTS: ${{ vars.MAVEN_OPTS }}
   GPG_KEY_FILE: /tmp/gpg-key.txt
 
 jobs:
